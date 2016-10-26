@@ -2,8 +2,8 @@ import nltk, os, numpy as np, csv, sys
 
 def get_dtm(path):
     query = sorted(get_imlist(path)) # the text files in folder
-    subject = [query[i][-15:-4] for i in range(len(query))] # extract the subject name
-
+    subject = [query[i][-13:-4] for i in range(len(query))] # extract the subject name
+                
     # read the files and convert words into tokens
     terms_by_subject = []
     for i in range(len(subject)):
@@ -17,6 +17,14 @@ def get_dtm(path):
     # extract the terms/vocabulary across text files
     vocabulary = sorted(set(w[1] for w in terms_by_subject))
     print vocabulary
+    
+    # initilize file writing
+    dtm_file = path + path[-4:-1] + '.csv'
+    print dtm_file
+    
+    with open(dtm_file, 'w') as csvfile:
+        writer = csv.writer(csvfile, delimiter = ',')
+        writer.writerow(vocabulary)
 
     # extract the frequencies to create a document-term matrix and write a csv file with the dtm
     dtm = []
@@ -24,14 +32,10 @@ def get_dtm(path):
         dtv = [cfd[ss][word] for word in vocabulary] # vector of frequencies per vocabulary term
         print ss
         print dtv
-
-    dtm_file = path + path[-9:-1] + '.csv'
-    print dtm_file
     
-    with open(dtm_file, 'w') as csvfile:
-        writer = csv.DictWriter(csvfile, fieldnames=vocabulary)
-        writer.writeheader()
-        writer.writerows(dtm)
+        with open(dtm_file, 'a') as csvfile:
+            writer = csv.writer(csvfile, delimiter = ',')
+            writer.writerow(dtv)
 
 
 def get_imlist(path):

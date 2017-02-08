@@ -1,5 +1,7 @@
 # Text-Mining
-Exploring a Text-Mining Approach as Rapid Prototyping Tool for Formative-Assessment Development in Problem-Based Learning Environments
+Exploring a Text-Mining Approach as Rapid Prototyping Tool for Formative-Assessment Development in Problem-Based Learning Environments.
+
+tm2.py has been written in Python 2.7, it might not run in Python 3 versions
 
 # How to Use tm2.py
 python tm2.py 'input_folder' 'output_folder'

@@ -19,9 +19,9 @@ def get_dtm(path):
     print vocabulary
     
     # initilize file writing
-    dtm_file = path + path[-4:-1] + '.csv'
+    dtm_file = path_out + path[-4:-1] + '.csv'
     print dtm_file
-    
+     
     with open(dtm_file, 'w') as csvfile:
         writer = csv.writer(csvfile, delimiter = ',')
         writer.writerow(vocabulary)
@@ -75,6 +75,7 @@ def prepare_text(raw_text):
 
 def main():
     path = sys.argv[1]
+    path_out = sys.argv[2]
     path_pre = path + "/pre/"  
     pre = get_dtm(path_pre)
 

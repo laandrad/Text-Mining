@@ -3,7 +3,7 @@ Exploring a Text-Mining Approach as Rapid Prototyping Tool for Formative-Assessm
 
 tm2.py has been written in Python 2.7, it might not run in Python 3 versions
 
-Needs nltk and numpy Python packages
+Needs NLTK and NUMPY Python packages
 
 # How to Use tm2.py
 python tm2.py 'input_folder' 'output_folder'

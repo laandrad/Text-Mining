@@ -1,6 +1,6 @@
 import nltk, os, numpy as np, csv, sys
 
-def get_dtm(path):
+def get_dtm(path, path_out):
     query = sorted(get_imlist(path)) # the text files in folder
     subject = [query[i][-13:-4] for i in range(len(query))] # extract the subject name
                 
@@ -77,13 +77,13 @@ def main():
     path = sys.argv[1]
     path_out = sys.argv[2]
     path_pre = path + "/pre/"  
-    pre = get_dtm(path_pre)
+    pre = get_dtm(path_pre, path_out)
 
     path_dur = path + "/during/"
-    during = get_dtm(path_dur)
+    during = get_dtm(path_dur, path_out)
 
     path_post = path + "/post/"
-    post = get_dtm(path_post)
+    post = get_dtm(path_post, path_out)
 
 
 if __name__ == '__main__':

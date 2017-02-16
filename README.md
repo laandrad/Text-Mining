@@ -8,7 +8,7 @@ Exploring a Text-Mining Approach as Rapid Prototyping Tool for Formative-Assessm
 python extractDTM_computeCosineValues.py input_path, output_path, title
 
 ### Argument definition
-'input_path' is a folder path with text documents (.txt extension)
+'input_path' is a folder path with text documents (i.e., '.txt' files)
 
 'output_path' is a folder path where csv files will be written with output matrices
 

@@ -15,7 +15,7 @@ python extractDTM_computeCosineValues.py input_path, output_path, title
 'title' is a string with a label/identifier for the text documents (e.g., 'pre' or 'post')
 
 ### Output
-extractDTM_computeCosineValues.py produces two matrices: (1) a document-term matrix of norm i,j where rows (i) are documents and columns (j) are terms, 
+extractDTM_computeCosineValues.py retrieves two matrices: (1) a document-term matrix of norm i,j where rows (i) are documents and columns (j) are terms, 
 and (2) a pairwise cosine similarity values matrix of norm k (a symmetric matrix), where k is the number of text documents
 
 # How to Use tm2.py
@@ -28,3 +28,6 @@ python tm2.py 'input_folder' 'output_folder'
 'input_folder' is the folder path to the three folders called "pre", "during", and "post"
 
 'output_folder' is the folder path where you want to save the csv files with the dtm matrices per each folder (i.e., pre, during, post)
+
+### Output
+tm2.py retrieves three document-term matrices for text documents inside "pre", "during", and "post" folders

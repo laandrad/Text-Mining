@@ -1,4 +1,5 @@
-# Text-Mining
+# Text-Mining Project
+## A Latent Semantic Analysis (LSA) to measure 'disciplinary discourse' similaries between text documents
 Exploring a Text-Mining Approach as Rapid Prototyping Tool for Formative-Assessment Development in Problem-Based Learning Environments.
 
 # How to Use extractDTM_computeCosineValues.py

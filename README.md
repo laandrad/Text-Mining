@@ -6,6 +6,7 @@ This GitHub repository includes the files used in the project entitled: "Explori
 ## Note: requires NLTK, NUMPY, and SCIPY packages
 ## Note: extractDTM_computeCosineValues.py has been written in Python 2.7, it might not run in Python 3 versions
 
+### Command prompt
 python extractDTM_computeCosineValues.py input_path, output_path, title
 
 ### Argument definition
@@ -23,6 +24,7 @@ and (2) a pairwise cosine similarity values matrix of norm k (a symmetric matrix
 ## Note: requires NLTK and NUMPY packages
 ## Note: tm2.py has been written in Python 2.7, it might not run in Python 3 versions. For Python 3 use tm2_3.py
 
+### Command prompt
 python tm2.py 'input_folder' 'output_folder'
 
 ### Argument definition

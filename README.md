@@ -2,7 +2,7 @@
 Exploring a Text-Mining Approach as Rapid Prototyping Tool for Formative-Assessment Development in Problem-Based Learning Environments.
 
 # How to Use extractDTM_computeCosineValues.py
-## Needs NLTK, NUMPY, and SCIPY packages
+## Note: requires NLTK, NUMPY, and SCIPY packages
 ## Note: extractDTM_computeCosineValues.py has been written in Python 2.7, it might not run in Python 3 versions
 
 python extractDTM_computeCosineValues.py input_path, output_path, title
@@ -19,7 +19,7 @@ extractDTM_computeCosineValues.py produces two matrices: (1) a document-term mat
 and (2) a pairwise cosine similarity values matrix of norm k (a symmetric matrix), where k is the number of text documents
 
 # How to Use tm2.py
-## Needs NLTK and NUMPY packages
+## Note: requires NLTK and NUMPY packages
 ## Note: tm2.py has been written in Python 2.7, it might not run in Python 3 versions. For Python 3 use tm2_3.py
 
 python tm2.py 'input_folder' 'output_folder'

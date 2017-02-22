@@ -24,7 +24,7 @@ def get_dtm(input_path, output_path, title):
     
     # extract terms from each text document to create a vocabulary (keeping unique terms only)
     vocabulary = sorted(set(w[1] for w in terms_by_subject))
-    print vocabulary
+    # print vocabulary
     
     # initilize dtm file writer and write the header with the vocabulary
     # a 'title_dtm.csv' file will be written inside 'output_path' folder
@@ -60,7 +60,7 @@ def get_dtm(input_path, output_path, title):
         dv = []
         for j in xrange(len(dtm)):
             d = 1 - spatial.distance.cosine(dtm[j], dtm[i])
-            print i, j, d
+            print 'distance from document', i, 'to document', j, 'is', d
             dv.append(d)
 
         with open(csm_file, 'a') as csvfile:
@@ -122,3 +122,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+

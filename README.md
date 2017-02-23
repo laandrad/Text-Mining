@@ -7,7 +7,7 @@ This GitHub repository includes the files used in the project entitled: "Explori
 ## Note: extractDTM_computeCosineValues.py has been written in Python 2.7, it might not run in Python 3 versions
 
 ### Command prompt
-python extractDTM_computeCosineValues.py 'input_path', 'output_path', 'title'
+python extractDTM_computeCosineValues.py 'input_path', 'output_path', 'title', 'method', 'bigrams'
 
 ### Argument definition
 'input_path' is a folder path with text documents (i.e., '.txt' files)
@@ -15,6 +15,10 @@ python extractDTM_computeCosineValues.py 'input_path', 'output_path', 'title'
 'output_path' is a folder path where csv files will be written with output matrices
 
 'title' is a string with a label/identifier for the text documents (e.g., 'pre' or 'post')
+
+'method' defines what terms should be included in the vector space representation. 'method' = 1 would include only nouns; 'method' = 2 would include nouns and adverbs
+
+'bigrams' defines whether bigrams should be included in the vector space representation. 'bigrams' = True would compute all the bigrams in each vector computed with method 'method'. 'bigrams' = False would not compute bigrams.
 
 ### Output
 extractDTM_computeCosineValues.py retrieves two matrices: (1) a document-term matrix of norm i,j where rows (i) are documents and columns (j) are terms, 

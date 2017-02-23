@@ -16,7 +16,7 @@ python extractDTM_computeCosineValues.py 'input_path' 'output_path' 'title' 'met
 
 'title' is a string with a label/identifier for the text documents (e.g., 'pre' or 'post')
 
-'method' defines what terms should be included in the vector space representation. 'method' = 1 would include only nouns; 'method' = 2 would include nouns and adverbs
+'method' defines what terms should be included in the vector space representation. 'method' = 1 would include nouns only; 'method' = 2 would include nouns and adverbs
 
 'bigrams' defines whether bigrams should be included in the vector space representation. 'bigrams' = True would compute all the bigrams in each vector computed with method 'method'. 'bigrams' = False would not compute bigrams.
 

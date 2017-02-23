@@ -7,7 +7,7 @@ This GitHub repository includes the files used in the project entitled: "Explori
 ## Note: extractDTM_computeCosineValues.py has been written in Python 2.7, it might not run in Python 3 versions
 
 ### Command prompt
-python extractDTM_computeCosineValues.py 'input_path', 'output_path', 'title', 'method', 'bigrams'
+python extractDTM_computeCosineValues.py 'input_path' 'output_path' 'title' 'method' 'bigrams'
 
 ### Argument definition
 'input_path' is a folder path with text documents (i.e., '.txt' files)

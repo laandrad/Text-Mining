@@ -76,6 +76,7 @@ def main():
             test_dtm = DTM(vocabulary, documents, test_features)
             test_dtm = test_dtm.compute_dtm()
 
+            print "Computing cosine values..."
             dv = {}
             for i in xrange(len(documents)):
                 d = 1 - spatial.distance.cosine(benchmark_dtv[benchmark_name], test_dtm[documents[i]])
@@ -86,12 +87,17 @@ def main():
             this_method = "method=" + method[j] + '_' + "bigram=" + bigram[j]
             method_csv[this_method] = pd.Series(dv)
 
+        print "Saving to data frame..."
         df = pd.DataFrame(method_csv)
+        test = test.split('\\')[-1]
+        test = test.split('.')[0]
+        df['test_group'] = test
 
         frames.append(df)
 
     result = pd.concat(frames)
 
+    print "Saving results to file: ", output_file
     result.to_csv(output_file)
 
     print 'Finished computing {0} data frames'.format(str(len(test_folders)))

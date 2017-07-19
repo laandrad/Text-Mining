@@ -1,94 +1,102 @@
-import csv
-import sys
+# import os
+from io import open
+from sys import argv
 
+import pandas as pd
+from numpy import isnan
 from scipy import spatial
 
-from myTMtools import *
-
-from itertools import chain
+from tools import *
 
 
 def main():
-    benchmark_path = sys.argv[1]
-    transcription_path = sys.argv[2]
-    output_path = sys.argv[3]
-    title = sys.argv[4]
-    method = sys.argv[5]
-    bigrams = sys.argv[6]
+    """this is the run file"""
+    transcript_files = argv[1]
+    benchmark_files = argv[2]
+    output_path = argv[3]
 
-    # get a path to the text files in 'input_path' folder
-    query = sorted(get_imlist(benchmark_path))
+    method = 'a'
+    bigram = 'False'
+    output_file = output_path + '/' + 'transcripts_cosine_values.csv'
 
-    # extract subject name for each text document
-    subject = [query[i][-13:-4] for i in range(len(query))]
+    # load file which points to transcript files
+    with open(transcript_files, 'r', encoding="utf-8", errors='ignore') as f:
+        transcript_files = f.read()
+    transcript_files = transcript_files.splitlines()
 
-    # read the text documents and convert words into tokens,
-    # then bind all (tokens, subject) pairs into a list
-    terms_by_benchmark = []
-    for i in range(len(subject)):
-        print 'Preparing text vector for: ', subject[i]
-        terms = category_tokens(query[i], subject[i], method, bigrams)
-        terms_by_benchmark = terms_by_benchmark + terms
+    with open(benchmark_files, 'r', encoding="utf-8", errors='ignore') as f:
+        benchmark_files = f.read()
+    benchmark_files = benchmark_files.splitlines()
 
-    # initialize cosine similarity matrix file writer and write the header with the subject names
-    # a 'title_cosine.csv' file will be written inside 'output_path' folder
-    header = [['time'], ['subject'], subject]
-    header = list(chain.from_iterable(header))
-    csm_file = output_path + '/' + str(title) + '_cosine.csv'
-    with open(csm_file, 'w') as csvfile:
-        writer = csv.writer(csvfile, delimiter=',')
-        writer.writerow(header)
+    # load k transcript and benchmark files
+    frames = []
 
-    # load transcript file
-    transcription = io.open(transcription_path, 'r', encoding='windows-1252')
+    for k in range(len(transcript_files)):
+        benchmark_file = str(benchmark_files[k]).replace('"', '')
+        print benchmark_file
+        with open(benchmark_file, 'r', encoding="utf-8", errors='ignore') as f:
+            benchmark = f.read()
 
-    for line in transcription:
-        tokens = nltk.word_tokenize(line)
-        if not 0 >= len(tokens):
+        transcript_file = str(transcript_files[k]).replace('"', '')
+        print "Reading text from file: ", transcript_file
+        group = transcript_file.split("\\")
+        group = group[-1].split(".")[0]
 
-            # create a term list for line
-            name = str(tokens[1])
-            print 'Preparing text vector for line at time: ', name
+        with open(transcript_file, 'r', encoding="utf-8", errors='ignore') as f:
+            transcript = f.read()
 
-            s = ' '
-            text = s.join(tokens[6:len(tokens)])
-            text = prepare_text(str(text.encode("utf-8")), method, bigrams)
+        transcript = transcript.splitlines()
 
-            if not 0 >= len(text):
-                category = []
-                for i in range(len(text)):
-                    category.append(name)
+        # load expert vocabulary and features
+        bench_features = ExtractFeatures(method, bigram)
+        bench_features = bench_features.extract_features_from_text(benchmark, 'benchmark')
+        vocabulary = sorted(set(w[1] for w in bench_features))
 
-                terms = zip(category, text)
+        # iterate over each line
+        dict_dv = {}
+        dict_n = {}
+        dict_g = {}
+        i = 1
 
-                # bind line terms with benchmark terms
-                terms_by_category = terms_by_benchmark + terms
-                # print terms_by_category
+        for line in transcript:
+            # print line
+            text = nltk.word_tokenize(line)
+            time, name, line = [text[1], text[3], text[4:]]
+            assert time[0] == "0" and time[2] == ":",\
+                "Time slot not a time before: " + text[0] + ' ' + text[1] + ' ' + group
+            # print time[2] + name + group
+            line = ' '.join(line)
+            line_features = ExtractFeatures(method, bigram)
+            line_features = line_features.extract_features_from_text(line, name)
+            features = line_features + bench_features
 
-                # extract terms from each text document to create a vocabulary (keeping unique terms only)
-                vocabulary = sorted(set(w[1] for w in terms_by_category))
-                documents = sorted(set(w[0] for w in terms_by_category))
+            dtm = DTM(vocabulary, [name, 'benchmark'], features)
+            dtm = dtm.compute_dtm()
 
-                # 1. extract term frequencies from each text document - a.k.a. frequency vectors
-                # 2. bind all frequency vectors into a dtm matrix
-                dtm = []
-                for d in documents:
-                    a = [word for category, word in terms_by_category if category == d]
-                    dtv = [a.count(word) for word in vocabulary]  # vector of frequencies per vocabulary term
-                    dtm.append(dtv)
-                # print dtm
+            print "Computing cosine values for line", i, "of", len(transcript), "in transcript", k, "of", len(transcript_files)
+            if not sum(dtm[name]) == 0:
+                d = 1 - spatial.distance.cosine(dtm[name], dtm['benchmark'])
+            else:
+                d = 0
+            if isnan(d):
+                d = 0
+            dict_dv[time] = d
+            dict_n[time] = name
+            dict_g[time] = group
+            i += 1
 
-                dv = []
-                for j in range(1, len(documents)):
-                    d = 1 - spatial.distance.cosine(dtm[0], dtm[j])
-                    dv.append(d)
+        df = {'dv': pd.Series(dict_dv), 'ID': pd.Series(dict_n), 'Group': pd.Series(dict_g)}
+        df = pd.DataFrame(df)
 
-                line = [[name], [tokens[4]], dv]
-                line = list(chain.from_iterable(line))
-                with open(csm_file, 'a') as csvfile:
-                    writer = csv.writer(csvfile, delimiter=',')
-                    writer.writerow(line)
-                print line
+        frames.append(df)
+
+    result = pd.concat(frames)
+    print result
+
+    print "Saving results to file: ", output_file
+    result.to_csv(output_file)
+
+    print 'Finished computing {0} data frames'.format(str(len(transcript_files)))
 
 
 if __name__ == '__main__':
